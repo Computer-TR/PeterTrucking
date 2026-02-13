@@ -112,7 +112,6 @@ import {
   FaShieldAlt,
   FaClock,
   FaUsers,
-  FaTrophy,
 } from "react-icons/fa";
 
 const About = () => {
