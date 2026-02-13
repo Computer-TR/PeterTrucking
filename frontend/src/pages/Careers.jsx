@@ -304,7 +304,7 @@
 // export default Careers;
 
 import React, { useState } from "react";
-import { FaTruck, FaWrench, FaLaptop, FaMoneyBillWave, FaClock, FaShieldAlt, FaUsers, FaTimes, FaHome, FaGraduationCap } from "react-icons/fa";
+import { FaTruck, FaWrench, FaLaptop, FaMoneyBillWave, FaClock, FaShieldAlt, FaUsers, FaTimes, FaHome} from "react-icons/fa";
 import DriverApplicationForm from "../components/careers/DriverApplicationForm";
 import GeneralApplicationForm from "../components/careers/GeneralApplicationForm";
 
