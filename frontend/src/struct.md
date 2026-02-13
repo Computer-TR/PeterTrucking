@@ -1,0 +1,34 @@
+```
+└── 📁frontend
+    └── 📁public
+    └── 📁src
+        └── 📁components
+            └── 📁admin
+            └── 📁careers
+            └── 📁common
+                ├── Loader.jsx
+                ├── ProtectedRoute.jsx
+            └── 📁home
+            └── 📁layout
+                ├── Footer.jsx
+                ├── Layout.jsx
+                ├── Navbar.jsx
+        └── 📁context
+            ├── AuthContext.js
+        └── 📁pages
+            └── 📁admin
+            ├── Careers.jsx
+            ├── Home.jsx
+            ├── Login.jsx
+        └── 📁services
+            ├── api.js
+            ├── applicationService.js
+            ├── authService.js
+        └── 📁utils
+            ├── constants.js
+        ├── index.css
+    ├── .env
+    ├── package-lock.json
+    ├── package.json
+    └── tailwind.config.js
+```
