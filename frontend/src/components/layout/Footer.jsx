@@ -263,13 +263,13 @@ const Footer = () => {
               © {currentYear} Peter Trucking. All rights reserved.
             </span>
             <div className="flex space-x-6">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#top" className="text-gray-400 hover:text-white transition-colors">
                 Privacy Policy
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#top" className="text-gray-400 hover:text-white transition-colors">
                 Terms of Service
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#top" className="text-gray-400 hover:text-white transition-colors">
                 Safety
               </a>
             </div>
