@@ -123,9 +123,6 @@ import {
   FaEnvelope,
   FaMapMarkerAlt,
   FaFacebook,
-  FaTwitter,
-  FaLinkedin,
-  FaInstagram,
 } from "react-icons/fa";
 
 const Footer = () => {
