@@ -126,9 +126,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
-  FaBox,
-  FaSnowflake,
-  FaWarehouse,
   FaCheckCircle,
   FaArrowRight,
 } from "react-icons/fa";
