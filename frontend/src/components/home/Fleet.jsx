@@ -186,7 +186,6 @@
 import React from "react";
 import {
   FaTruck,
-  FaTools,
   FaSatellite,
   FaShieldAlt,
   FaCheckCircle,
