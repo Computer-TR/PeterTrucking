@@ -956,6 +956,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import { applicationService } from "../services/applicationService";
 
 const DriverApplicationForm = ({ position, onSuccess, onCancel }) => {
   const [loading, setLoading] = useState(false);
@@ -1196,11 +1197,7 @@ const DriverApplicationForm = ({ position, onSuccess, onCancel }) => {
         submitData.append('resume', resumeFile);
       }
 
-      const response = await axios.post('/api/applications/submit-driver', submitData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await applicationService.submitApplication(submitData);
       
       if (response.data.success) {
         onSuccess();
