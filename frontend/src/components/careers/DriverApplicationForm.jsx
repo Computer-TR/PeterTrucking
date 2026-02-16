@@ -1156,7 +1156,11 @@ const DriverApplicationForm = ({ position, onSuccess, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
+      console.log("Using applicationService:", applicationService); // ADD THIS
+      console.log("API_URL:", process.env.REACT_APP_API_URL); // ADD THIS
+
+      
     // Validate all required fields
     const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'dateOfBirth', 'ssnLast4'];
     let hasErrors = false;
