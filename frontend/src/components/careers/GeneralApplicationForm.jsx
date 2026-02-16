@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { applicationService } from "../services/applicationService";
 
 const GeneralApplicationForm = ({ position, onSuccess, onCancel }) => {
   const [loading, setLoading] = useState(false);
@@ -178,64 +179,60 @@ const GeneralApplicationForm = ({ position, onSuccess, onCancel }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Basic validation
-    if (!formData.fullName || !formData.email || !formData.phone || 
-        !formData.dateOfBirth || !formData.ssnLast4) {  // ✅ Fixed
-      alert("Please fill in all required personal information fields");
-      return;
-    }
+  e.preventDefault();
+  
+  // Basic validation
+  if (!formData.fullName || !formData.email || !formData.phone || 
+      !formData.dateOfBirth || !formData.ssnLast4) {
+    alert("Please fill in all required personal information fields");
+    return;
+  }
 
-    if (!formData.legallyAllowed) {
-      alert("Please confirm you are legally allowed to work in the United States");
-      return;
-    }
+  if (!formData.legallyAllowed) {
+    alert("Please confirm you are legally allowed to work in the United States");
+    return;
+  }
 
-    if (formData.employmentType.length === 0) {
-      alert("Please select at least one employment type");
-      return;
-    }
+  if (formData.employmentType.length === 0) {
+    alert("Please select at least one employment type");
+    return;
+  }
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      // Create FormData for file upload
-      const submitData = new FormData();
+  try {
+    // Create FormData for file upload
+    const submitData = new FormData();
 
-      // Add all form fields
-      Object.keys(formData).forEach(key => {
-        if (Array.isArray(formData[key])) {
-          submitData.append(key, JSON.stringify(formData[key]));
-        } else {
-          submitData.append(key, formData[key]);
-        }
-      });
-
-      // Add resume file if present
-      if (resumeFile) {
-        submitData.append('resume', resumeFile);
-      }
-
-      const response = await axios.post('/api/applications/submit-general', submitData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      
-      if (response.data.success) {
-        onSuccess();
+    // Add all form fields
+    Object.keys(formData).forEach(key => {
+      if (Array.isArray(formData[key])) {
+        submitData.append(key, JSON.stringify(formData[key]));
       } else {
-        alert("There was an error submitting your application. Please try again.");
+        submitData.append(key, formData[key]);
       }
-    } catch (error) {
-      console.error("Application submission error:", error);
-      alert("There was an error submitting your application. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    });
 
+    // Add resume file if present
+    if (resumeFile) {
+      submitData.append('resume', resumeFile);
+    }
+
+    // ✅ USE THE SERVICE INSTEAD
+    const response = await applicationService.submitApplication(submitData);
+    
+    if (response.success) {
+      onSuccess();
+    } else {
+      alert("There was an error submitting your application. Please try again.");
+    }
+  } catch (error) {
+    console.error("Application submission error:", error);
+    alert("There was an error submitting your application. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* APPLICANT DATA */}
