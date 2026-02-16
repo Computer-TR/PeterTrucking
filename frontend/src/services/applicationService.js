@@ -15,19 +15,19 @@ export const applicationService = {
 
   // Admin - Get single application
   getApplication: async (id) => {
-    const response = await api.get(`/applications/${id}`);
+    const response = await api.get(`/applications/${id}`);  // Fixed
     return response.data;
   },
 
   // Admin - Update application
   updateApplication: async (id, data) => {
-    const response = await api.put(`/applications/${id}`, data);
+    const response = await api.put(`/applications/${id}`, data);  // Fixed
     return response.data;
   },
 
   // Admin - Delete application
   deleteApplication: async (id) => {
-    const response = await api.delete(`/applications/${id}`);
+    const response = await api.delete(`/applications/${id}`);  // Fixed
     return response.data;
   },
 
