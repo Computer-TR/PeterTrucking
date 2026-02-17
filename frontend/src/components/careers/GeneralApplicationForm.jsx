@@ -219,7 +219,7 @@ const GeneralApplicationForm = ({ position, onSuccess, onCancel }) => {
     }
 
     // ✅ USE THE SERVICE INSTEAD
-    const response = await applicationService.submitGeneralApplication(formData);
+    const response = await applicationService.submitGeneralApplication(submitData);
     
     if (response.success) {
       onSuccess();
