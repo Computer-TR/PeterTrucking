@@ -51,7 +51,7 @@ router.post('/submit-driver', upload.single('resume'), applicationController.sub
 
 // POST /api/applications/submit-general
 // router.post('/submit-general', upload.single('resume'), applicationController.submitGeneralApplication);
-router.post('/submit-general', applicationController.submitGeneralApplication);
+router.post('/submit-general', upload.single('resume'), applicationController.submitGeneralApplication);
 
 
 module.exports = router;
