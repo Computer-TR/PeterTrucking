@@ -1201,7 +1201,7 @@ const DriverApplicationForm = ({ position, onSuccess, onCancel }) => {
         submitData.append('resume', resumeFile);
       }
 
-      const response = await applicationService.submitGeneralApplication(submitData);
+      const response = await applicationService.submitDriverApplication(submitData);
       
       if (response.data.success) {
         onSuccess();
