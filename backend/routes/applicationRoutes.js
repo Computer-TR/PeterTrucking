@@ -46,12 +46,13 @@ const upload = multer({
   }
 });
 
-// POST /api/applications/submit-driver
-router.post('/submit-driver', upload.single('resume'), applicationController.submitDriverApplication);
 
-// POST /api/applications/submit-general
+// router.post('/submit-driver', upload.single('resume'), applicationController.submitDriverApplication);
+router.post('/submit-driver', applicationController.submitDriverApplication);
+
+
 // router.post('/submit-general', upload.single('resume'), applicationController.submitGeneralApplication);
-router.post('/submit-general', upload.single('resume'), applicationController.submitGeneralApplication);
+router.post('/submit-general', applicationController.submitGeneralApplication);
 
 
 module.exports = router;
