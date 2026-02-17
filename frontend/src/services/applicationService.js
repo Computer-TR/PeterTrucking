@@ -41,18 +41,19 @@
 import api from './api';
 
 export const applicationService = {
-  // Public - Submit application (handles both JSON and FormData)
-  submitApplication: async (applicationData) => {
-    // Check if it's FormData (for file uploads)
-    const isFormData = applicationData instanceof FormData;
-    
-    const config = isFormData ? {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    } : {};
+  // Public - Submit general application
+  submitGeneralApplication: async (applicationData) => {
+    const response = await api.post('/applications/submit-general', applicationData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+  },
 
-    const response = await api.post('/applications', applicationData, config);
+  // Public - Submit driver application
+  submitDriverApplication: async (applicationData) => {
+    const response = await api.post('/applications/submit-driver', applicationData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
     return response.data;
   },
 
@@ -64,19 +65,19 @@ export const applicationService = {
 
   // Admin - Get single application
   getApplication: async (id) => {
-    const response = await api.get(`/applications/${id}`);  // Fixed syntax
+    const response = await api.get(`/applications/${id}`);
     return response.data;
   },
 
   // Admin - Update application
   updateApplication: async (id, data) => {
-    const response = await api.put(`/applications/${id}`, data);  // Fixed syntax
+    const response = await api.put(`/applications/${id}`, data);
     return response.data;
   },
 
   // Admin - Delete application
   deleteApplication: async (id) => {
-    const response = await api.delete(`/applications/${id}`);  // Fixed syntax
+    const response = await api.delete(`/applications/${id}`);
     return response.data;
   },
 
