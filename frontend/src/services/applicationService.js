@@ -43,19 +43,15 @@ import api from './api';
 export const applicationService = {
   // Public - Submit general application
   submitGeneralApplication: async (applicationData) => {
-    const response = await api.post('/applications/submit-general', applicationData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
-    return response.data;
-  },
+  // ✅ Plain JSON, no special headers needed
+  const response = await api.post('/applications/submit-general', applicationData);
+  return response.data;
+},
 
-  // Public - Submit driver application
-  submitDriverApplication: async (applicationData) => {
-    const response = await api.post('/applications/submit-driver', applicationData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
-    return response.data;
-  },
+submitDriverApplication: async (applicationData) => {
+  const response = await api.post('/applications/submit-driver', applicationData);
+  return response.data;
+},
 
   // Admin - Get all applications
   getApplications: async (params = {}) => {
