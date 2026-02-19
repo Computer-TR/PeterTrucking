@@ -127,7 +127,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import {
   FaCheckCircle,
-  FaArrowRight,
 } from "react-icons/fa";
 
 const Services = () => {
