@@ -166,7 +166,7 @@ const Hero = () => {
           <div className="text-center lg:text-left">
             <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full mb-6">
               <span className="text-sm font-semibold text-white">
-                America's Trusted Hauler Since 1995
+                America's Trusted Hauler Since 1960
               </span>
             </div>
 
@@ -221,7 +221,7 @@ const Hero = () => {
                 <div className="text-sm text-gray-200 mt-1">Modern Trucks</div>
               </div>
               <div className="text-center lg:text-left">
-                <div className="text-3xl font-bold text-red-500">25+</div>
+                <div className="text-3xl font-bold text-red-500">65+</div>
                 <div className="text-sm text-gray-200 mt-1">Years Experience</div>
               </div>
               <div className="text-center lg:text-left">

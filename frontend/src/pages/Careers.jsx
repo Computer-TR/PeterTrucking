@@ -494,7 +494,7 @@ const Careers = () => {
                   <div className="text-sm text-gray-600 mt-1">Team Members</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-primary-600">30+</div>
+                  <div className="text-3xl font-bold text-primary-600">60+</div>
                   <div className="text-sm text-gray-600 mt-1">Years in Business</div>
                 </div>
                 <div className="text-center lg:text-left">

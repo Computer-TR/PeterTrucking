@@ -240,13 +240,19 @@
 //               </ul>
 //             </div>
 
-//             {/* Map Placeholder */}
-//             <div className="bg-gray-200 rounded-xl h-48 flex items-center justify-center text-gray-500 border border-gray-300">
-//               <div className="text-center">
-//                 <FaMapMarkerAlt className="text-4xl mb-2 mx-auto" />
-//                 <p className="text-sm font-medium">Map Integration</p>
-//                 <p className="text-xs">Athens, WI 54411</p>
-//               </div>
+//             {/* Google Map */}
+//             <div className="rounded-xl overflow-hidden shadow-md border border-gray-300">
+//               <iframe
+//                 title="Peter Trucking Location"
+//                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55480.8105952186!2d-90.15515285136718!3d45.0034407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x52aaadeb5fde6b99%3A0x2aba0ff9084357d0!2sPeter%20Trucking%20LLC!5e1!3m2!1sen!2sus!4v1771017279994!5m2!1sen!2sus"
+//                 width="100%"
+//                 height="192"
+//                 style={{ border: 0 }}
+//                 allowFullScreen=""
+//                 loading="lazy"
+//                 referrerPolicy="no-referrer-when-downgrade"
+//                 className="w-full h-48"
+//               ></iframe>
 //             </div>
 //           </div>
 //         </div>
@@ -276,22 +282,51 @@ const Contact = () => {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Contact form submitted:", formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        serviceType: "",
-        message: "",
+    setIsLoading(true);
+    setError("");
+
+    const data = {
+      access_key: "1c34de01-504c-43d3-a735-8c87e3a5df66",
+      subject: `New Contact Form Submission from ${formData.name}`,
+      from_name: "Peter Trucking Contact Form",
+      ...formData,
+    };
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       });
-    }, 3000);
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitted(true);
+        setTimeout(() => {
+          setSubmitted(false);
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            company: "",
+            serviceType: "",
+            message: "",
+          });
+        }, 3000);
+      } else {
+        setError("Something went wrong. Please try again or call us directly.");
+      }
+    } catch (err) {
+      setError("Network error. Please try again or call us directly.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleChange = (e) => {
@@ -326,7 +361,7 @@ const Contact = () => {
   ];
 
   return (
-    <section className="py-20 bg-white">
+    <section id="contact" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -386,6 +421,9 @@ const Contact = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Honeypot spam protection */}
+                <input type="checkbox" name="botcheck" className="hidden" style={{ display: "none" }} />
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <input
                     name="name"
@@ -447,11 +485,16 @@ const Contact = () => {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all resize-none"
                 />
 
-                <button 
-                  type="submit" 
-                  className="w-full px-8 py-4 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg"
+                {error && (
+                  <p className="text-red-600 text-sm">{error}</p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full px-8 py-4 bg-primary-600 text-white font-semibold rounded-lg hover:bg-primary-700 transition-all shadow-md hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Send Message
+                  {isLoading ? "Sending..." : "Send Message"}
                 </button>
               </form>
             )}
@@ -464,7 +507,7 @@ const Contact = () => {
               <p className="text-sm text-red-100 mb-4">
                 Immediate assistance available 24/7/365.
               </p>
-              <a 
+              <a
                 href="tel:1-715-257-7121"
                 className="flex items-center space-x-2 font-semibold hover:underline"
               >
@@ -504,7 +547,7 @@ const Contact = () => {
             <div className="rounded-xl overflow-hidden shadow-md border border-gray-300">
               <iframe
                 title="Peter Trucking Location"
-                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55480.8105952186!2d-90.15515285136718!3d45.0034407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x52aaadeb5fde6b99%3A0x2aba0ff9084357d0!2sPeter%20Trucking%20LLC!5e1!3m2!1sen!2sus!4v1771017279994!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d55480.8105952186!2d-90.15515285136718!3d45.0034407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x52aaadeb5fde6b99%3A0x2aba0ff9084357d0!2sPeter%20Trucking%20LLC!5e1!3m2!1sen!2sus!4v1771017279994!5m2!1sen!2sus"
                 width="100%"
                 height="192"
                 style={{ border: 0 }}

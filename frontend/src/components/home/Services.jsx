@@ -139,12 +139,12 @@ const Services = () => {
       description:
         "Specialized bulk material transport including grain, sand, aggregates, and more.",
       features: [
-        "Pneumatic & gravity discharge",
+        "Gravity discharge",
         "Food-grade certified trailers",
         "Weight monitoring systems",
         "Cross-contamination prevention",
       ],
-      image: "img6.jpg",
+      image: "img14.jpg",
     },
     {
       // icon: <FaBox />,
@@ -154,10 +154,9 @@ const Services = () => {
       features: [
         "53ft temperature-stable trailers",
         "Multi-stop capability",
-        "Liftgate available",
         "Real-time tracking",
       ],
-      image: "img11.jpg",
+      image: "img8.jpg",
     },
     {
       // icon: <FaSnowflake />,
@@ -165,12 +164,10 @@ const Services = () => {
       description:
         "Temperature-controlled transport maintaining -20°F to 70°F for sensitive cargo.",
       features: [
-        "Multi-temp zones",
+        "Real-time tracking",
         "Continuous monitoring",
-        "Pharmaceutical certified",
-        "Backup power systems",
       ],
-      image: "img8.jpg",
+      image: "img11.jpg",
     },
   ];
 
@@ -231,8 +228,8 @@ const Services = () => {
                 </ul>
 
                 <button className="inline-flex items-center space-x-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors group">
-                  <span>Request Quote</span>
-                  <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                  {/* <span>Request Quote</span> */}
+                  {/* <FaArrowRight className="group-hover:translate-x-1 transition-transform" /> */}
                 </button>
               </div>
             </div>

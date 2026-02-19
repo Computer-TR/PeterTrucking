@@ -150,11 +150,11 @@ const About = () => {
             </span>
 
             <h2 className="text-4xl font-bold text-gray-900 mt-3 mb-6">
-              30+ Years of Trucking Excellence
+              65+ Years of Trucking Excellence
             </h2>
 
             <p className="text-gray-600 mb-4 leading-relaxed">
-              Founded in 1995, Peter Trucking has grown from a single truck operation
+              Originally founded in 1960, Peter Trucking has grown from a single truck operation
               to one of the Midwest's most trusted freight carriers. Our
               commitment to quality service and driver satisfaction has made us an
               industry leader.
