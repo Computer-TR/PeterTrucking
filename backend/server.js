@@ -21,11 +21,12 @@ app.use(cors({
     if (!origin) return callback(null, true);
 
     const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:5173',
-      'https://peter-trucking-frontend.vercel.app',
-      'https://thepetercompanies.com',
-    ];
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://peter-trucking-frontend.vercel.app',
+    'https://thepetercompanies.com',
+    'https://www.thepetercompanies.com',
+  ];
 
     const isVercelPreview = /^https:\/\/peter-trucking-frontend.*\.vercel\.app$/.test(origin);
     const isAllowed = allowedOrigins.includes(origin) || isVercelPreview;
