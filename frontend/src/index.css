@@ -273,3 +273,8 @@ img[loading="lazy"].loaded {
 ::-moz-selection {
   @apply bg-primary-100 text-primary-900;
 }
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
