@@ -24,6 +24,7 @@ app.use(cors({
       'http://localhost:3000',
       'http://localhost:5173',
       'https://peter-trucking-frontend.vercel.app',
+      'https://thepetercompanies.com'',
     ];
 
     const isVercelPreview = /^https:\/\/peter-trucking-frontend.*\.vercel\.app$/.test(origin);
