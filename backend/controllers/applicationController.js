@@ -51,14 +51,6 @@
 //     // Send email with resume attachment
 //     await sendDriverApplication(applicationData, resumeFile);
 
-//     // Clean up uploaded file after sending email
-//     if (resumeFile) {
-//       const fs = require('fs');
-//       fs.unlink(resumeFile.path, (err) => {
-//         if (err) console.error('Error deleting temp file:', err);
-//       });
-//     }
-
 //     res.status(200).json({
 //       success: true,
 //       message: 'Application submitted successfully'
@@ -149,14 +141,6 @@
 //     // Send email with resume attachment
 //     await sendGeneralApplication(applicationData, resumeFile);
 
-//     // Clean up uploaded file after sending email
-//     if (resumeFile) {
-//       const fs = require('fs');
-//       fs.unlink(resumeFile.path, (err) => {
-//         if (err) console.error('Error deleting temp file:', err);
-//       });
-//     }
-
 //     res.status(200).json({
 //       success: true,
 //       message: 'Application submitted successfully'
@@ -213,6 +197,10 @@ exports.submitDriverApplication = async (req, res) => {
       if (typeof str !== 'string') return str;
       return str.replace(/[<>]/g, '');
     };
+
+    const missingEmployers = [1, 2, 3].filter(
+    num => !applicationData[`employer${num}Name`] || !applicationData[`employer${num}Name`].trim()
+    );
 
     // Sanitize all string fields
     Object.keys(applicationData).forEach(key => {
@@ -303,6 +291,10 @@ exports.submitGeneralApplication = async (req, res) => {
       if (typeof str !== 'string') return str;
       return str.replace(/[<>]/g, '');
     };
+
+    const missingEmployers = [1, 2, 3].filter(
+    num => !applicationData[`employment${num}CompanyName`] || !applicationData[`employment${num}CompanyName`].trim()
+    );
 
     // Sanitize all string fields
     Object.keys(applicationData).forEach(key => {
