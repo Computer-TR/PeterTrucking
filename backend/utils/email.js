@@ -1,7 +1,5 @@
 // const nodemailer = require('nodemailer');
 // const PDFDocument = require('pdfkit');
-// const fs = require('fs');
-// const path = require('path');
 
 // // Create Gmail transporter
 // const createTransport = () => {
@@ -55,20 +53,26 @@
 //     .text('This application was submitted via the company website', { align: 'center' });
 // };
 
-// const generateTempPath = (filename) => {
-//   return path.join(__dirname, '..', 'uploads', filename);
+// // ─── BUFFER HELPER ───────────────────────────────────────────────────────────
+
+// const generatePDFBuffer = (buildFn) => {
+//   return new Promise((resolve, reject) => {
+//     const doc = new PDFDocument({ margin: 40 });
+//     const chunks = [];
+
+//     doc.on('data', (chunk) => chunks.push(chunk));
+//     doc.on('end', () => resolve(Buffer.concat(chunks)));
+//     doc.on('error', reject);
+
+//     buildFn(doc);
+//     doc.end();
+//   });
 // };
 
 // // ─── DRIVER APPLICATION PDF ─────────────────────────────────────────────────
 
 // const generateDriverPDF = (applicationData) => {
-//   return new Promise((resolve, reject) => {
-//     const doc = new PDFDocument({ margin: 40 });
-//     const filePath = generateTempPath(`driver-app-${Date.now()}.pdf`);
-//     const stream = fs.createWriteStream(filePath);
-
-//     doc.pipe(stream);
-
+//   return generatePDFBuffer((doc) => {
 //     addHeader(doc, 'CDL-A Driver Application');
 
 //     // Personal Information
@@ -150,23 +154,13 @@
 //     addField(doc, 'Signature Date', applicationData.signatureDate);
 
 //     addFooter(doc);
-//     doc.end();
-
-//     stream.on('finish', () => resolve(filePath));
-//     stream.on('error', reject);
 //   });
 // };
 
 // // ─── GENERAL APPLICATION PDF ────────────────────────────────────────────────
 
 // const generateGeneralPDF = (applicationData) => {
-//   return new Promise((resolve, reject) => {
-//     const doc = new PDFDocument({ margin: 40 });
-//     const filePath = generateTempPath(`general-app-${Date.now()}.pdf`);
-//     const stream = fs.createWriteStream(filePath);
-
-//     doc.pipe(stream);
-
+//   return generatePDFBuffer((doc) => {
 //     addHeader(doc, `${applicationData.positionApplied} Application`);
 
 //     // Applicant Information
@@ -250,10 +244,6 @@
 //     addField(doc, 'Signature Date', applicationData.signatureDate);
 
 //     addFooter(doc);
-//     doc.end();
-
-//     stream.on('finish', () => resolve(filePath));
-//     stream.on('error', reject);
 //   });
 // };
 
@@ -261,10 +251,21 @@
 
 // const sendDriverApplication = async (applicationData, resumeFile) => {
 //   const transport = createTransport();
-//   const pdfPath = await generateDriverPDF(applicationData);
+//   const pdfBuffer = await generateDriverPDF(applicationData);
 
-//   const attachments = [{ filename: `Driver-Application-${applicationData.firstName}-${applicationData.lastName}.pdf`, path: pdfPath }];
-//   if (resumeFile) attachments.push({ filename: resumeFile.originalname, path: resumeFile.path });
+//   const attachments = [{
+//     filename: `Driver-Application-${applicationData.firstName}-${applicationData.lastName}.pdf`,
+//     content: pdfBuffer,
+//     contentType: 'application/pdf'
+//   }];
+
+//   if (resumeFile) {
+//     attachments.push({
+//       filename: resumeFile.originalname,
+//       content: resumeFile.buffer,
+//       contentType: resumeFile.mimetype
+//     });
+//   }
 
 //   const mailOptions = {
 //     from: process.env.GMAIL_USER,
@@ -282,18 +283,26 @@
 //   } catch (error) {
 //     console.error('Error sending driver application email:', error);
 //     throw error;
-//   } finally {
-//     // Clean up generated PDF
-//     fs.unlink(pdfPath, (err) => { if (err) console.error('Error deleting PDF:', err); });
 //   }
 // };
 
 // const sendGeneralApplication = async (applicationData, resumeFile) => {
 //   const transport = createTransport();
-//   const pdfPath = await generateGeneralPDF(applicationData);
+//   const pdfBuffer = await generateGeneralPDF(applicationData);
 
-//   const attachments = [{ filename: `${applicationData.positionApplied}-Application-${applicationData.fullName}.pdf`, path: pdfPath }];
-//   if (resumeFile) attachments.push({ filename: resumeFile.originalname, path: resumeFile.path });
+//   const attachments = [{
+//     filename: `${applicationData.positionApplied}-Application-${applicationData.fullName}.pdf`,
+//     content: pdfBuffer,
+//     contentType: 'application/pdf'
+//   }];
+
+//   if (resumeFile) {
+//     attachments.push({
+//       filename: resumeFile.originalname,
+//       content: resumeFile.buffer,
+//       contentType: resumeFile.mimetype
+//     });
+//   }
 
 //   const mailOptions = {
 //     from: process.env.GMAIL_USER,
@@ -311,9 +320,6 @@
 //   } catch (error) {
 //     console.error('Error sending general application email:', error);
 //     throw error;
-//   } finally {
-//     // Clean up generated PDF
-//     fs.unlink(pdfPath, (err) => { if (err) console.error('Error deleting PDF:', err); });
 //   }
 // };
 
@@ -321,6 +327,8 @@
 
 const nodemailer = require('nodemailer');
 const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const path = require('path');
 
 // Create Gmail transporter
 const createTransport = () => {
@@ -374,26 +382,20 @@ const addFooter = (doc) => {
     .text('This application was submitted via the company website', { align: 'center' });
 };
 
-// ─── BUFFER HELPER ───────────────────────────────────────────────────────────
-
-const generatePDFBuffer = (buildFn) => {
-  return new Promise((resolve, reject) => {
-    const doc = new PDFDocument({ margin: 40 });
-    const chunks = [];
-
-    doc.on('data', (chunk) => chunks.push(chunk));
-    doc.on('end', () => resolve(Buffer.concat(chunks)));
-    doc.on('error', reject);
-
-    buildFn(doc);
-    doc.end();
-  });
+const generateTempPath = (filename) => {
+  return path.join(__dirname, '..', 'uploads', filename);
 };
 
 // ─── DRIVER APPLICATION PDF ─────────────────────────────────────────────────
 
 const generateDriverPDF = (applicationData) => {
-  return generatePDFBuffer((doc) => {
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDocument({ margin: 40 });
+    const filePath = generateTempPath(`driver-app-${Date.now()}.pdf`);
+    const stream = fs.createWriteStream(filePath);
+
+    doc.pipe(stream);
+
     addHeader(doc, 'CDL-A Driver Application');
 
     // Personal Information
@@ -444,17 +446,23 @@ const generateDriverPDF = (applicationData) => {
     addField(doc, 'License Ever Suspended', applicationData.licenseSuspended === 'yes' ? `Yes - ${applicationData.licenseSuspendedExplain || ''}` : 'No');
     addField(doc, 'Criminal Conviction', applicationData.criminalConviction === 'yes' ? `Yes - ${applicationData.criminalConvictionExplain || ''}` : 'No');
 
-    // Employment History
-    if (applicationData.currentEmployerName) {
-      addSectionTitle(doc, 'Current / Most Recent Employer');
-      addField(doc, 'Company', applicationData.currentEmployerName);
-      addField(doc, 'Phone', applicationData.currentEmployerPhone);
-      addField(doc, 'Address', applicationData.currentEmployerAddress);
-      addField(doc, 'Position', applicationData.currentPosition);
-      addField(doc, 'From', applicationData.currentFromDate);
-      addField(doc, 'To', applicationData.currentToDate || 'Present');
-      addField(doc, 'Reason for Leaving', applicationData.currentLeaveReason);
-    }
+    // Employment History — 3 employers using new field names
+    const addDriverEmployment = (num, label) => {
+      const company = applicationData[`employer${num}Name`];
+      if (!company) return;
+      addSectionTitle(doc, label);
+      addField(doc, 'Company', company);
+      addField(doc, 'Phone', applicationData[`employer${num}Phone`]);
+      addField(doc, 'Address', applicationData[`employer${num}Address`]);
+      addField(doc, 'Position', applicationData[`employer${num}Position`]);
+      addField(doc, 'From', applicationData[`employer${num}FromDate`] || 'N/A');
+      addField(doc, 'To', applicationData[`employer${num}ToDate`] || 'Present');
+      addField(doc, 'Reason for Leaving', applicationData[`employer${num}LeaveReason`]);
+    };
+
+    addDriverEmployment(1, 'Employment History — Employer #1 (Most Recent)');
+    addDriverEmployment(2, 'Employment History — Employer #2');
+    addDriverEmployment(3, 'Employment History — Employer #3');
 
     // Education
     addSectionTitle(doc, 'Education');
@@ -475,13 +483,23 @@ const generateDriverPDF = (applicationData) => {
     addField(doc, 'Signature Date', applicationData.signatureDate);
 
     addFooter(doc);
+    doc.end();
+
+    stream.on('finish', () => resolve(filePath));
+    stream.on('error', reject);
   });
 };
 
 // ─── GENERAL APPLICATION PDF ────────────────────────────────────────────────
 
 const generateGeneralPDF = (applicationData) => {
-  return generatePDFBuffer((doc) => {
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDocument({ margin: 40 });
+    const filePath = generateTempPath(`general-app-${Date.now()}.pdf`);
+    const stream = fs.createWriteStream(filePath);
+
+    doc.pipe(stream);
+
     addHeader(doc, `${applicationData.positionApplied} Application`);
 
     // Applicant Information
@@ -535,7 +553,7 @@ const generateGeneralPDF = (applicationData) => {
       doc.font('Helvetica').fontSize(10).text(applicationData.specialSkills, { width: doc.page.width - 80 });
     }
 
-    // Employment History helper
+    // Employment History
     const addEmployment = (num, label) => {
       const company = applicationData[`employment${num}CompanyName`];
       if (!company) return;
@@ -565,6 +583,10 @@ const generateGeneralPDF = (applicationData) => {
     addField(doc, 'Signature Date', applicationData.signatureDate);
 
     addFooter(doc);
+    doc.end();
+
+    stream.on('finish', () => resolve(filePath));
+    stream.on('error', reject);
   });
 };
 
@@ -572,21 +594,10 @@ const generateGeneralPDF = (applicationData) => {
 
 const sendDriverApplication = async (applicationData, resumeFile) => {
   const transport = createTransport();
-  const pdfBuffer = await generateDriverPDF(applicationData);
+  const pdfPath = await generateDriverPDF(applicationData);
 
-  const attachments = [{
-    filename: `Driver-Application-${applicationData.firstName}-${applicationData.lastName}.pdf`,
-    content: pdfBuffer,
-    contentType: 'application/pdf'
-  }];
-
-  if (resumeFile) {
-    attachments.push({
-      filename: resumeFile.originalname,
-      content: resumeFile.buffer,
-      contentType: resumeFile.mimetype
-    });
-  }
+  const attachments = [{ filename: `Driver-Application-${applicationData.firstName}-${applicationData.lastName}.pdf`, path: pdfPath }];
+  if (resumeFile) attachments.push({ filename: resumeFile.originalname, path: resumeFile.path });
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
@@ -604,26 +615,17 @@ const sendDriverApplication = async (applicationData, resumeFile) => {
   } catch (error) {
     console.error('Error sending driver application email:', error);
     throw error;
+  } finally {
+    fs.unlink(pdfPath, (err) => { if (err) console.error('Error deleting PDF:', err); });
   }
 };
 
 const sendGeneralApplication = async (applicationData, resumeFile) => {
   const transport = createTransport();
-  const pdfBuffer = await generateGeneralPDF(applicationData);
+  const pdfPath = await generateGeneralPDF(applicationData);
 
-  const attachments = [{
-    filename: `${applicationData.positionApplied}-Application-${applicationData.fullName}.pdf`,
-    content: pdfBuffer,
-    contentType: 'application/pdf'
-  }];
-
-  if (resumeFile) {
-    attachments.push({
-      filename: resumeFile.originalname,
-      content: resumeFile.buffer,
-      contentType: resumeFile.mimetype
-    });
-  }
+  const attachments = [{ filename: `${applicationData.positionApplied}-Application-${applicationData.fullName}.pdf`, path: pdfPath }];
+  if (resumeFile) attachments.push({ filename: resumeFile.originalname, path: resumeFile.path });
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
@@ -641,6 +643,8 @@ const sendGeneralApplication = async (applicationData, resumeFile) => {
   } catch (error) {
     console.error('Error sending general application email:', error);
     throw error;
+  } finally {
+    fs.unlink(pdfPath, (err) => { if (err) console.error('Error deleting PDF:', err); });
   }
 };
 
