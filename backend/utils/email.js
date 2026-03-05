@@ -383,7 +383,7 @@ const addFooter = (doc) => {
 };
 
 const generateTempPath = (filename) => {
-  return path.join(__dirname, '..', 'uploads', filename);
+  return path.join('/tmp', filename);
 };
 
 // ─── DRIVER APPLICATION PDF ─────────────────────────────────────────────────
