@@ -335,6 +335,17 @@ const Footer = () => {
               </a>
             </div>
           </div>
+          <div className="text-center text-sm text-gray-400 mt-4">
+            Developed by{" "}
+            <a
+              href="https://aiotalabs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-600 hover:text-primary-500 transition-colors font-semibold"
+            >
+              AIOTA Labs
+            </a>
+          </div>
         </div>
       </div>
     </footer>
