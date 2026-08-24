@@ -320,9 +320,22 @@ const Footer = () => {
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm space-y-4 md:space-y-0">
-            <span className="text-gray-400">
-              © {currentYear} Peter Trucking. All rights reserved.
-            </span>
+            <div className="flex flex-col items-center md:items-start space-y-1">
+              <span className="text-gray-400">
+                © {currentYear} Peter Trucking. All rights reserved.
+              </span>
+              <span className="text-gray-400">
+                Developed by{" "}
+                <a
+                  href="https://aiotalabs.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary-600 hover:text-primary-500 transition-colors font-semibold"
+                >
+                  AIOTA Labs
+                </a>
+              </span>
+            </div>
             <div className="flex space-x-6">
               <a href="#top" className="text-gray-400 hover:text-white transition-colors">
                 Privacy Policy
@@ -334,17 +347,6 @@ const Footer = () => {
                 Safety
               </a>
             </div>
-          </div>
-          <div className="text-center text-sm text-gray-400 mt-4">
-            Developed by{" "}
-            <a
-              href="https://aiotalabs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary-600 hover:text-primary-500 transition-colors font-semibold"
-            >
-              AIOTA Labs
-            </a>
           </div>
         </div>
       </div>
